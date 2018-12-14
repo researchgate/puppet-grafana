@@ -46,8 +46,8 @@ Puppet::Type.type(:grafana_plugin).provide(:grafana_cli) do
 
   def create
     if resource[:repo]
-      repo = "--repo #{resource[:repo]}"
-      grafana_cli(repo, 'plugins', 'install', resource[:name])
+      plugin_url = "--pluginUrl #{resource[:repo]}#{resource[:name]}-#{resource[:version]}.#{resource[:extension]}"
+      grafana_cli(plugin_url, 'plugins', 'install', resource[:name])
     else
       grafana_cli('plugins', 'install', resource[:name])
     end

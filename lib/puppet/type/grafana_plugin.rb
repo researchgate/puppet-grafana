@@ -7,8 +7,10 @@ manages grafana plugins
 
 @example Install a grafana plugin from different repo
  grafana_plugin { 'grafana-simple-json-datasource':
-   ensure => present,
-   repo   => 'https://nexus.company.com/grafana/plugins',
+   ensure    => present,
+   version   => '0.0.1',
+   extension => 'zip'
+   repo      => 'https://nexus.company.com/grafana/plugins',
  }
 
 @example Uninstall a grafana plugin
@@ -43,5 +45,13 @@ DESC
         raise ArgumentError, format('%s is not a valid URL', value)
       end
     end
+  end
+
+  newparam(:version) do
+    desc 'Version of plugin to install'
+  end
+
+  newparam(:extension) do
+    desc 'Plugin archive extension'
   end
 end
