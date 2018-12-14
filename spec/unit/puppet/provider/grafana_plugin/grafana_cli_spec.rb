@@ -55,12 +55,14 @@ EOT
     let(:resource) do
       Puppet::Type::Grafana_plugin.new(
         name: 'grafana-plugin',
-        repo: 'https://nexus.company.com/grafana/plugins'
+        repo: 'https://nexus.company.com/grafana/plugins/',
+        version: '0.0.1',
+        extension: 'zip'
       )
     end
 
     it '#create with repo' do
-      provider.expects(:grafana_cli).with('--repo https://nexus.company.com/grafana/plugins', 'plugins', 'install', 'grafana-plugin')
+      provider.expects(:grafana_cli).with('--pluginUrl https://nexus.company.com/grafana/plugins/grafana-plugin-0.0.1.zip', 'plugins', 'install', 'grafana-plugin')
       provider.create
     end
   end
