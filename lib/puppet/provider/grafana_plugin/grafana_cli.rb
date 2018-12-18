@@ -48,10 +48,10 @@ Puppet::Type.type(:grafana_plugin).provide(:grafana_cli) do
     if resource[:repo]
       plugin_url = "--pluginUrl #{resource[:repo]}/#{resource[:name]}-#{resource[:version]}.#{resource[:extension]}"
       val = grafana_cli(plugin_url, 'plugins', 'install', resource[:name])
-      notify(val)
+      notice(val)
     else
       val = grafana_cli('plugins', 'install', resource[:name])
-      notify(val)
+      notice(val)
     end
     @property_hash[:ensure] = :present
   end
