@@ -53,7 +53,7 @@ Puppet::Type.type(:grafana_plugin).provide(:grafana_cli) do
           :GF_PLUGIN_URL => plugin_url
         }
       }
-      grafana_cli(args,options)
+      grafana_cli_with_opts(args, options)
     else
       val = grafana_cli('plugins', 'install', resource[:name])
       notice(val)
@@ -68,11 +68,7 @@ Puppet::Type.type(:grafana_plugin).provide(:grafana_cli) do
 
   private
 
-  def grafana_cli(args, options)
-    if resource[:repo]
-      Puppet::Util::Execution.execute(args, options)
-    else
-      super
-    end
+  def grafana_cli_with_opts(args, options)
+    Puppet::Util::Execution.execute(args, options)
   end
 end
