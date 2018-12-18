@@ -2,7 +2,7 @@ Puppet::Type.type(:grafana_plugin).provide(:grafana_cli) do
   has_command(:grafana_cli, 'grafana-cli') do
     is_optional
 
-    environment :GF_PLUGIN_URL => plugin_url
+    environment :GF_PLUGIN_URL => "#{resource[:repo]}/#{resource[:name]}-#{resource[:version]}.#{resource[:extension]}"
   end
 
   defaultfor feature: :posix
