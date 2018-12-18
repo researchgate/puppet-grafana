@@ -47,17 +47,13 @@ Puppet::Type.type(:grafana_plugin).provide(:grafana_cli) do
   def create
     if resource[:repo]
       plugin_url = "#{resource[:repo]}/#{resource[:name]}-#{resource[:version]}.#{resource[:extension]}"
-      val = grafana_cli(["--#{plugin_url}", 'plugins', 'install', resource[:name]])
       args = ["/usr/sbin/grafana-cli", 'plugins', 'install', resource[:name]]
       options = {
         custom_environment: {
           :GF_PLUGIN_URL => plugin_url
         }
       }
-      Puppet::Util::Execution.execute(args, options)
-      notice(val)
-      notice(grafana_cli)
-      Puppet.debug(grafana_cli)
+      grafana_cli(args,options)
     else
       val = grafana_cli('plugins', 'install', resource[:name])
       notice(val)
@@ -68,5 +64,15 @@ Puppet::Type.type(:grafana_plugin).provide(:grafana_cli) do
   def destroy
     grafana_cli('plugins', 'uninstall', resource[:name])
     @property_hash[:ensure] = :absent
+  end
+
+  private
+
+  def grafana_cli(args, options)
+    if resource[:repo]
+      Puppet::Util::Execution.execute(args, options)
+    else
+      super
+    end
   end
 end
